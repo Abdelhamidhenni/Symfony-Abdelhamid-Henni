@@ -1,0 +1,17 @@
+{
+  "name": "Symfony-Abdelhamid-Henni",
+  "description": "Un projet Wsf par Abdelhamid Henni",
+  "keywords": ["symfony", "blog", "wsf", "app"],
+  "repository": "https://github.com/Abdelhamidhenni/Symfony-Abdelhamid-Henni",
+  "addons": [
+    "cleardb"
+  ],
+  "env": {
+    "SYMFONY_ENV": {
+      "value": "symfony"
+    }
+  },
+  "scripts": {
+    "postdeploy": "php app/console doctrine:migration:migrate"
+  }
+}
