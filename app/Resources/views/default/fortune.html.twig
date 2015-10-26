@@ -1,0 +1,13 @@
+
+<div class="div_quote"> 
+	<ul>         
+		<h2><a href="{{path("quote",{id: fortune.id})}}">Titre: {{ fortune.title }}</h2>
+		<h4><a href="{{path("author",{author: fortune.author})}}">Auteur: {{ fortune.author }}</a></h4>
+		<h1>" {{ fortune.content }} "</h1>
+		<h5>Publiée le: {{ fortune.createdAt|date('d/m/y') }}</h5>
+
+		<li><a href="{{path("vote_up",{id: fortune.id})}}">👍 {{ fortune.upVote}}</a></li>
+		<li><a href="{{path("vote_down",{id: fortune.id})}}">👎 {{ fortune.downVote}}</a></li>
+	</ul>
+
+</div>
