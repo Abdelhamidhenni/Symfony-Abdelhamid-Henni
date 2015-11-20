@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+	{% block title %}Modération{% endblock %}
+	{% block body %}
+<h1>Modération de quote</h1>
+<div class="div_quote">
+	<ul>
+		<h2><a href="{{path("moderation",{id: fortune.id})}}">Titre: {{ fortune.title }}</h2>
+		<h3><a href="{{path("author",{author: fortune.author})}}">Auteur: {{ fortune.author }}</a></h3>
+		<p>" {{ fortune.content }} "</p>
+		<h4>Publiée le: {{ fortune.createdAt|date('d/m/y') }}</h4>
+    <ul>
+       <li> <a href="{{ path('publish', {id: fortune.id}) }}">Publier</a></li>
+       <li> <a href="{{ path('remove', {id: fortune.id}) }}">Supprimer</a></li>
+    </ul>
+</div>
+
+{% endfor %}
+<div class="pagerfanta"> {{ pagerfanta(fortunes) }}</div>
+	{% endblock %}

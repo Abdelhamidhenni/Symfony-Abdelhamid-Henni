@@ -1,0 +1,9 @@
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>Les Auteurs</h1>
+	{% for fortune in fortunes %}
+	       <div class="">{{ include('default/fortune.html.twig') }}</div>
+	{% endfor %}		
+{% endblock %}

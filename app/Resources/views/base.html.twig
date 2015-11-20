@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Quote{% endblock %}</title>
+    {% block stylesheets %}
+
+        <header>Cours Symfony 2</header>
+        
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav-justified collapse navbar-collapse navbar-menubuilder">
+            <li class="active"><a href="{{path("homepage")}}">Home</a></li>
+            <li><a href="{{path("create")}}">Création d'un Quote</a></li>
+             <li><a href="{{path("punchline")}}">Best Rated</a></li>
+          </ul>
+        </div>
+
+    <link rel="stylesheet" href="https://bootswatch.com/cerulean/bootstrap.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css')}}">
+{% endblock %}
+<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+</head>
+<body>
+    {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+
+        </body>
+        </html>
+

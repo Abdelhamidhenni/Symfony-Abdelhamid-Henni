@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<h1>Créer Un quote</h1>
+
+<form action="{{ path('create') }}" method="post" novalidate>
+	{{form_row(form.title, {'attr': {class:"form-control"}})}}
+	{{form_row(form.author, {'attr': {class:"form-control"}})}}
+	{{form_row(form.content, {'attr': {class:"form-control"}})}}
+	{{form_row(form.submit, {'attr': {class:"btn btn-default"}})}}
+	{{form_rest(form)}}
+</form>
+
+
+{% endblock %}

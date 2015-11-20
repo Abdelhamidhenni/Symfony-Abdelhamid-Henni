@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>La Quote</h1>
+	{% for fortune in fortunes %}
+		<div>{{ include('default/fortune.html.twig') }}</div>
+
+		<div><h3>Les Commentaires</h3>
+			{% for comment in fortune.comments %}
+				{{ comment.content }}
+				<p>Par : {{ comment.author }}</p>
+			{% endfor %}
+		</div>
+
+		<div><h3>Postez Un Commentaire</h3><form action="{{path("quote",{id: fortune.id})}}" method="post" novalidate>
+			{{form_row(form.author, {'attr': {class:"form-control"}})}}
+			{{form_row(form.content, {'attr': {class:"form-control"}})}}
+			{{form_row(form.submit, {'attr': {class:"btn btn-default"}})}}
+			{{form_rest(form)}}
+		</form></div>
+	{% endfor %}		
+{% endblock %}
