@@ -17,5 +17,22 @@ class CommentType extends AbstractType {
 		->add('author')
 		->add('content')
 		->add('submit', 'submit');
-	}	
+	}
+	/**
+	 * @param OptionsResolverInterface $resolver
+	 */
+	public function setDefaultOptions(OptionsResolverInterface $resolver)
+	{
+		$resolver->setDefaults(array(
+			'data_class' => 'AppBundle\Entity\comment'
+		));
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return 'appbundle_comment';
+	}
 }

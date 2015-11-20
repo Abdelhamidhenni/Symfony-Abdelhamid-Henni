@@ -32,14 +32,18 @@ class DefaultController extends Controller
      * @Route("/vote_up/{id}", name="vote_up")
      */
      public function setVoteUp($id)
-    {     
-       if ($this->get('session')->get($id)){
-       return $this->redirectToRoute("create");
+    {
+        if (!$this->get('session')->has("votedup".$id) && !$this->get('session')->has("voteddown".$id)){
 
-       } 
-       $this->get('session')->set($id, "value");
-       $this->getDoctrine()->getRepository("AppBundle:Fortune")->find($id)->voteUp();
-       $this->getDoctrine()->getManager()->flush();         
+            $this->get('session')->set($id, "value");
+            $this->getDoctrine()->getRepository("AppBundle:Fortune")->find($id)->voteUp();
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute("create");
+
+       }
+        else {
+            $this->NoMultiVote($id);
+        }
        return $this->redirectToRoute("punchline");
     }
 
@@ -48,16 +52,33 @@ class DefaultController extends Controller
      * @Route("/vote_down/{id}", name="vote_down")
      */
      public function setVoteDown($id)
-    {     
-        if ($this->get('session')->get($id)){
-       return $this->redirectToRoute("create");
-       }
-       $this->get('session')->set($id, "value");
+    {
+        if (!$this->get('session')->has("votedup".$id) && !$this->get('session')->has("voteddown".$id)){
+
        $this->getDoctrine()->getRepository("AppBundle:Fortune")->find($id)->voteDown();
        $this->getDoctrine()->getManager()->flush();
+       $this->get('session')->set("voteddown".$id, "yes");
+        return $this->redirectToRoute("create");
+        }
+        else {
+            $this->NoMultiVote($id);
+        }
        return $this->redirectToRoute("punchline");
     }
 
+    public function NoMultiVote($id) {
+        if (!$this->get('session')->has("votedup".$id) && !$this->get('session')->has("voteddown".$id)){
+            $this->get('session')
+                ->getFlashBag()
+                ->add('error', 'Already voted');
+        }
+
+        if ($this->get('session')->has("voteddown".$id)) {
+            $this->get('session')
+                ->getFlashBag()
+                ->add('error', 'Already voted');
+        }
+    }
     /**
      * @Route("/bestpunchline", name="punchline")
      */
@@ -126,6 +147,46 @@ class DefaultController extends Controller
             ));
     }
 
-    
+    /**
+     * @Route("/moderation", name="moderation")
+     */
+    public function moderationAction(Request $request)
+    {
+        $pagerfanta = new pagerfanta($this->getDoctrine()->getRepository("AppBundle:Quote")->findUnpublished());
+        $pagerfanta->setMaxPerPage(3);
+        $pagerfanta->setCurrentPage($request->get("page", 1));
+        // replace this example code with whatever you need
+        return $this->render('moderation.html.twig', array(
+                'quote' => $pagerfanta
+            )
+        );
+    }
+
+    /**
+     * @Route("/publish/{id}", name="publish")
+     */
+    public function publishAction($id)
+    {
+        $quote = $this->getDoctrine()->getRepository("AppBundle:Quote")->find($id);
+        $quote->publish();
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute("moderation");
+    }
+
+    /**
+     * @Route("moderation/{id}/remove/", name="remove")
+     */
+    public function removeAction($id)
+    {
+        $quote = $this->getDoctrine()->getRepository("AppBundle:Quote")->find($id);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($quote);
+        $em->flush();
+
+        return $this->redirectToRoute("moderation");
+    }
 
 }
+

@@ -65,6 +65,13 @@ class Fortune
     private $downVote;
 
     /**
+     * @var \published
+     *
+     * @ORM\Column(name="published", type="boolean")
+     */
+    private $published;
+
+    /**
     * @ORM\OneTOMany(targetEntity="Comment", mappedBy="fortune")
     */
     private $comments;
@@ -83,7 +90,7 @@ class Fortune
     {
         $this->upVote = 0;
         $this->downVote = 0;
-
+        $this->published = false;
         $this->createdAt = new \DateTime();
     }
 
@@ -219,6 +226,25 @@ class Fortune
         $this->downVote++;
         return $this;
     }
+    /**
+     * publish
+     *
+     * @return boolean
+     */
+    public function publish()
+    {
+        $this->published = true;
 
+        return $this;
+    }
+    /**
+     * Get Comments
+     *
+     * @return string
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
 }
 

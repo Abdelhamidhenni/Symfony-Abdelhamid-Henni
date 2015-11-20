@@ -45,6 +45,28 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
  		->getResult();
  	}
 
+	public function findRandom() {
 
+		 $count = $this->createQueryBuilder('r')
+			 ->select('COUNT(r)')
+			 ->getQuery()
+			 ->getSingleScalarResult();
+
+
+		 return $this->createQueryBuilder('r')
+			 ->select('r.id')
+			 ->setFirstResult(rand (0 , $count - 1))
+			 ->setMaxResults(1)
+			 ->getQuery()
+			 ->getSingleScalarResult();
+	 }
+
+	public function findUnpublished() {
+		 $queryBuilder = $this->createQueryBuilder('i')
+			 ->where('i.published = false')
+			 ->orderBy("i.createdAt","DESC");
+
+		 return new DoctrineORMadapter($queryBuilder);
+	 }
  	
  } 
